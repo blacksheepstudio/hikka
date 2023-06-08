@@ -18,7 +18,6 @@ import (
 	"time"
 	"unsafe"
 	// "encoding/json"
-	"github.com/fatih/color"
 )
 
 var threads int
@@ -35,10 +34,10 @@ var m3u_file string
 var logins []string
 var passwords []string
 
-var err *color.Color
-var info *color.Color
-var warn *color.Color
-var succ *color.Color
+// var err *color.Color
+// var info *color.Color
+// var warn *color.Color
+// var succ *color.Color
 
 type CameraAddress struct {
 	IP   string `json:"ip"`
@@ -110,7 +109,7 @@ func getSnapshots(ip string, uid int64, startChannel int, count int, login strin
 		)
 
 		if result == 0 {
-			err.Println("Error while downloading a snapshot from", ip, ":", (int)(C.NET_DVR_GetLastError()))
+			fmt.Printf("Error while downloading a snapshot from", ip, ":", (int)(C.NET_DVR_GetLastError()))
 		} else {
 			os.Chmod(filename, 0644)
 			downloaded++
@@ -118,9 +117,9 @@ func getSnapshots(ip string, uid int64, startChannel int, count int, login strin
 	}
 
 	if downloaded != 0 {
-		info.Println("Downloaded", downloaded, "photos from", ip)
+		fmt.Printf("Downloaded", downloaded, "photos from", ip)
 	} else {
-		warn.Println("Can't get photos from", ip)
+		fmt.Printf("Can't get photos from", ip)
 	}
 }
 
@@ -172,7 +171,7 @@ func processSnapshots(ip string, uid int64, login string, password string, devic
 			)
 		}
 	} else {
-		warn.Println("No cameras on", ip)
+		fmt.Printf("No cameras on", ip)
 	}
 }
 
@@ -201,7 +200,7 @@ func checkLogin(ip string, login string, password string, results chan DeviceInf
 	))
 
 	if uid >= 0 {
-		succ.Printf("Logged in: %s:%s@%s\n", login, password, ip)
+		fmt.Printf("Logged in: %s:%s@%s\n", login, password, ip)
 
 		if shoots_path != "" {
 			processSnapshots(ip, uid, login, password, device)
@@ -227,7 +226,7 @@ func checkLogin(ip string, login string, password string, results chan DeviceInf
 func bruteforce(ip string, results chan DeviceInfo) {
 	if ping {
 		if !HPRPing(ip) {
-			err.Println(ip, "is dead")
+			fmt.Printf(ip, "is dead")
 
 			return
 		}
@@ -267,7 +266,7 @@ Feeding:
 	bfg.Wait()
 
 	if !found {
-		warn.Println("Can't log into", ip)
+		fmt.Printf("Can't log into", ip)
 
 		results <- DeviceInfo{Address: CameraAddress{ip, uint16(port)}}
 	}
@@ -460,13 +459,13 @@ func start() {
 func main() {
 	parseFlags()
 
-	err = color.New(color.FgRed, color.Bold)
-	info = color.New(color.FgBlue, color.Bold)
-	warn = color.New(color.FgYellow, color.Bold)
-	succ = color.New(color.FgGreen, color.Bold)
+	// err = color.New(color.FgRed, color.Bold)
+	// info = color.New(color.FgBlue, color.Bold)
+	// warn = color.New(color.FgYellow, color.Bold)
+	// succ = color.New(color.FgGreen, color.Bold)
 
 	if port < 0 || port > 0xFFFF {
-		err.Println("Wrong port value")
+		fmt.Printf("Wrong port value")
 
 		os.Exit(-1)
 	}
