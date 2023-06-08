@@ -26,9 +26,8 @@ And now you have a `build` directory with compiled app.
 ## How to compile:
 
     apt install git golang-go mingw-w64
-    git clone https://github.com/superhacker777/hikka
+    git clone https://github.com/blacksheepstudio/hikka
     export GOPATH=$HOME/go
-    go get https://github.com/fatih/color
     cd hikka && make
 
 ## Usage
