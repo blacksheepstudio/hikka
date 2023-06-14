@@ -109,7 +109,7 @@ func getSnapshots(ip string, uid int64, startChannel int, count int, login strin
 		)
 
 		if result == 0 {
-			fmt.Printf("Error while downloading a snapshot from", ip, ":", (int)(C.NET_DVR_GetLastError()))
+			fmt.Printf("5")
 		} else {
 			os.Chmod(filename, 0644)
 			downloaded++
@@ -117,9 +117,9 @@ func getSnapshots(ip string, uid int64, startChannel int, count int, login strin
 	}
 
 	if downloaded != 0 {
-		fmt.Printf("Downloaded", downloaded, "photos from", ip)
+		fmt.Printf("8")
 	} else {
-		fmt.Printf("Can't get photos from", ip)
+		fmt.Printf("4")
 	}
 }
 
@@ -171,7 +171,7 @@ func processSnapshots(ip string, uid int64, login string, password string, devic
 			)
 		}
 	} else {
-		fmt.Printf("No cameras on", ip)
+		fmt.Printf("3")
 	}
 }
 
@@ -200,7 +200,7 @@ func checkLogin(ip string, login string, password string, results chan DeviceInf
 	))
 
 	if uid >= 0 {
-		fmt.Printf("Logged in: %s:%s@%s\n", login, password, ip)
+		fmt.Printf("1")
 
 		if shoots_path != "" {
 			processSnapshots(ip, uid, login, password, device)
@@ -266,7 +266,7 @@ Feeding:
 	bfg.Wait()
 
 	if !found {
-		fmt.Printf("Can't log into", ip)
+		fmt.Printf("0")
 
 		results <- DeviceInfo{Address: CameraAddress{ip, uint16(port)}}
 	}
